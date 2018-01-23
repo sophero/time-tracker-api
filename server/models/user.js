@@ -63,7 +63,24 @@ UserSchema.methods.generateAuthToken = function() {
   });
 };
 
-// User model methods
+// .statics holds the model methods, whereas .methods holds the instance methods.
+UserSchema.statics.findByToken = function(token) {
+  var User = this; // User model.
+  var decoded;
+
+  try {
+    decoded = jwt.verify(token, process.env.JWT_SECRET);
+  } catch (e) {
+    return Promise.reject(); // optional argument would be the error that gets returned.
+  }
+
+  return User.findOne({
+    _id: decoded._id,
+    'tokens.token': token,
+    'tokens.access': 'auth'
+  });
+};
+
 UserSchema.statics.findByCredentials = function(email, password) {
   var User = this;
 
