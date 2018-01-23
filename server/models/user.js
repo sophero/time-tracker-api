@@ -63,6 +63,15 @@ UserSchema.methods.generateAuthToken = function() {
   });
 };
 
+UserSchema.methods.removeToken = function(token) {
+  var user = this;
+  return user.update({
+    $pull: {
+      tokens: { token }
+    }
+  });
+};
+
 // .statics holds the model methods, whereas .methods holds the instance methods.
 UserSchema.statics.findByToken = function(token) {
   var User = this; // User model.
