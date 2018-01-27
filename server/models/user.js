@@ -21,6 +21,12 @@ var UserSchema = new mongoose.Schema({
     required: true,
     minlength: 6
   },
+  name: {
+    type: String,
+    required: true,
+    minlength: 1,
+    trim: true
+  },
   tokens: [
     {
       access: {
@@ -36,11 +42,11 @@ var UserSchema = new mongoose.Schema({
 });
 
 // User instance methods
-// overwrites built-in .toJSON() so that user objects returned by server only contain certain properties
 UserSchema.methods.toJSON = function() {
+  // overwrites built-in .toJSON() so that user objects returned by server only contain certain properties
   var user = this; //   user instance
   var userObject = user.toObject();
-  return _.pick(userObject, ['_id', 'email']);
+  return _.pick(userObject, ['_id', 'email', 'name']);
 };
 
 UserSchema.methods.generateAuthToken = function() {
