@@ -44,7 +44,7 @@ var UserSchema = new mongoose.Schema({
 // User instance methods
 UserSchema.methods.toJSON = function() {
   // overwrites built-in .toJSON() so that user objects returned by server only contain certain properties
-  var user = this; //   user instance
+  var user = this; // user instance
   var userObject = user.toObject();
   return _.pick(userObject, ['_id', 'email', 'name']);
 };
