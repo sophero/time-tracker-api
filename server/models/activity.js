@@ -4,8 +4,9 @@ var Activity = mongoose.model('Activity', {
   name: {
     type: String,
     required: true,
+    unique: true,
     minlength: 1,
-    trim: true // removes leading and trailing white space
+    trim: true
   },
   _user_id: {
     type: mongoose.Schema.Types.ObjectId,

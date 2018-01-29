@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var TimeSegment = mongoose.model('Activity', {
+var TimeSegment = mongoose.model('TimeSegment', {
   _activity_id: {
     type: mongoose.Schema.Types.ObjectId,
     required: true
