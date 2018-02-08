@@ -202,52 +202,55 @@ app.patch('/time_segments/:id', authenticate, (req, res) => {
     .catch(e => res.status(400).send(e));
 });
 
-// app.get(
-//   '/time_segments/:interval_start/:interval_end',
-//   authenticate,
-//   (req, res) => {
-//     // return all time_segments with a startTime later than :interval_stop and/or a stopTime earlier than :interval_start
-//     var { interval_start, interval_end } = req.params;
-//     TimeSegment.find({
-//       _user_id: req.user._id,
-//       $or: [
-//         // startTime falls in interval
-//         {
-//           $and: [
-//             { startTime: { $gte: interval_start } },
-//             { startTime: { $lt: interval_end } }
-//           ]
-//         },
-//         // stopTime falls in interval
-//         {
-//           $and: [
-//             { stopTime: { $gt: interval_start } },
-//             { stopTime: { $lte: interval_end } }
-//           ]
-//         },
-//         // interval contained within time segment
-//         {
-//           $and: [
-//             { startTime: { $lt: interval_start } },
-//             { stopTime: { $gt: interval_end } }
-//           ]
-//         }
-//       ]
-//     })
-//       .then(docs => {
-//         var toSend = docs.map(time_segment => {
-//           return _.pick(time_segment, [
-//             '_activity_id',
-//             'activity_name',
-//             'startTime',
-//             'stopTime'
-//           ]);
-//         });
-//         res.send({ timeSegments: toSend });
-//       })
-//       .catch(e => res.status(400).send(e));
-//   }
-// );
+app.get(
+  '/time_segments/:interval_start/:interval_stop',
+  authenticate,
+  (req, res) => {
+    // return all time_segments with a startTime later than :interval_stop and/or a stopTime earlier than :interval_start
+
+    var interval_start = Number(req.params.interval_start);
+    var interval_stop = Number(req.params.interval_stop);
+
+    TimeSegment.find({
+      _user_id: req.user._id,
+      $or: [
+        // startTime falls in interval
+        {
+          $and: [
+            { startTime: { $gte: interval_start } },
+            { startTime: { $lt: interval_stop } }
+          ]
+        },
+        // stopTime falls in interval
+        {
+          $and: [
+            { stopTime: { $gt: interval_start } },
+            { stopTime: { $lte: interval_stop } }
+          ]
+        },
+        // interval contained within time segment
+        {
+          $and: [
+            { startTime: { $lt: interval_start } },
+            { stopTime: { $gt: interval_stop } }
+          ]
+        }
+      ]
+    })
+      .then(docs => {
+        var toSend = docs.map(time_segment => {
+          return _.pick(time_segment, [
+            '_activity_id',
+            'activity_name',
+            'startTime',
+            'stopTime'
+          ]);
+        });
+        res.send({ timeSegments: toSend });
+      })
+      .catch(e => res.status(400).send(e));
+  }
+);
 
 // app.delete('/time_segments/:id', authenticate, (req, res) => {
 //   var id = req.params.id;
