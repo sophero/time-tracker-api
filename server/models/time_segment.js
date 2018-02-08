@@ -5,6 +5,14 @@ var TimeSegment = mongoose.model('TimeSegment', {
     type: mongoose.Schema.Types.ObjectId,
     required: true
   },
+  _user_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true
+  },
+  activity_name: {
+    type: String,
+    required: true
+  },
   startTime: {
     type: Number,
     required: true

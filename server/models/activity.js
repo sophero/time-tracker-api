@@ -4,7 +4,6 @@ var Activity = mongoose.model('Activity', {
   name: {
     type: String,
     required: true,
-    unique: true,
     minlength: 1,
     trim: true
   },
